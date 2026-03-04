@@ -8,24 +8,16 @@ export function FitnessProvider({ children }) {
   const [steps, setSteps] = useState(0);
   const [goal, setGoal] = useState("Stay Fit");
 
-  // NEW PROFILE DATA
+  // Profile data
   const [profile, setProfile] = useState({
     currentWeight: "",
     goalWeight: "",
     height: ""
   });
 
-  const addMeal = (meal) => {
-    setMeals([...meals, meal]);
-  };
-
-  const addWorkout = (workout) => {
-    setWorkouts([...workouts, workout]);
-  };
-
-  const updateProfile = (newProfile) => {
-    setProfile(newProfile);
-  };
+  const addMeal = (meal) => setMeals([...meals, meal]);
+  const addWorkout = (workout) => setWorkouts([...workouts, workout]);
+  const updateProfile = (newProfile) => setProfile(newProfile);
 
   return (
     <FitnessContext.Provider

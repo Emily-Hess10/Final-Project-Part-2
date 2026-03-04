@@ -1,21 +1,21 @@
-import { createContext, useState, useContext } from "react";
+// src/context/TrackerContext.jsx
+import { createContext, useContext, useState } from "react";
 
 const TrackerContext = createContext();
 
 export function TrackerProvider({ children }) {
-  const [log, setLog] = useState([]);
-  const [user, setUser] = useState({ name: "John Doe" });
+  const [meals, setMeals] = useState([]);
 
-  const addItem = (item) => {
-    setLog((prev) => [...prev, item]);
+  const addMeal = (meal) => {
+    setMeals((prev) => [...prev, meal]);
   };
 
-  const removeItem = (id) => {
-    setLog((prev) => prev.filter((item) => item.id !== id));
+  const removeMeal = (index) => {
+    setMeals((prev) => prev.filter((_, i) => i !== index));
   };
 
   return (
-    <TrackerContext.Provider value={{ log, addItem, removeItem, user, setUser }}>
+    <TrackerContext.Provider value={{ meals, addMeal, removeMeal }}>
       {children}
     </TrackerContext.Provider>
   );

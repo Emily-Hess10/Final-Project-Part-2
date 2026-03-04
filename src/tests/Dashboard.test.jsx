@@ -1,17 +1,19 @@
 import { render, screen } from "@testing-library/react";
-import Dashboard from "../pages/Dashboard";
-import { FitnessProvider } from "../context/FitnessContext";
 import { BrowserRouter } from "react-router-dom";
+import Dashboard from "../pages/Dashboard";
+import { TrackerProvider } from "../context/TrackerContext";
+import { AuthContext } from "../context/AuthContext";
 
 test("Dashboard renders summary section", () => {
   render(
     <BrowserRouter>
-      <FitnessProvider>
-        <Dashboard />
-      </FitnessProvider>
+      <AuthContext.Provider value={{ user: { email: "test@test.com" }, logout: vi.fn() }}>
+        <TrackerProvider>
+          <Dashboard />
+        </TrackerProvider>
+      </AuthContext.Provider>
     </BrowserRouter>
   );
 
-  const title = screen.getByText(/Today's Summary/i);
-  expect(title).toBeInTheDocument();
+  expect(screen.getByText(/Today's Summary/i)).toBeInTheDocument();
 });

@@ -1,94 +1,96 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFitness } from "../context/FitnessContext";
 
 function Profile() {
-  const { goal, setGoal, steps, setSteps, profile, updateProfile } = useFitness();
+  const { profile, updateProfile, steps, goal, setGoal } = useFitness();
 
-  const [formData, setFormData] = useState(profile);
+  const [currentWeight, setCurrentWeight] = useState("");
+  const [goalWeight, setGoalWeight] = useState("");
+  const [heightFeet, setHeightFeet] = useState("");
+  const [heightInches, setHeightInches] = useState("");
+  const [message, setMessage] = useState("");
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
+  // Load profile into form
+  useEffect(() => {
+    if (profile) {
+      setCurrentWeight(profile.currentWeight || "");
+      setGoalWeight(profile.goalWeight || "");
+      if (profile.height) {
+        setHeightFeet(profile.height.feet || "");
+        setHeightInches(profile.height.inches || "");
+      }
+    }
+  }, [profile]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateProfile(formData);
+
+    updateProfile({
+      currentWeight,
+      goalWeight,
+      height: { feet: heightFeet, inches: heightInches },
+      fitnessGoal: goal,
+    });
+
+    setMessage("Profile updated successfully! ✅");
   };
 
   return (
     <div className="dashboard">
       <h2 className="section-title">Profile & Settings</h2>
 
-      {/* FITNESS GOAL DROPDOWN */}
-      <label>Fitness Goal</label>
-      <select value={goal} onChange={(e) => setGoal(e.target.value)}>
-        <option value="Stay Fit">Stay Fit</option>
-        <option value="Lose Weight">Lose Weight</option>
-        <option value="Gain Muscle">Gain Muscle</option>
-        <option value="Move More">Move More</option>
-        <option value="Improve Endurance">Improve Endurance</option>
-      </select>
-
-      {/* STEPS */}
-      <label>Today's Steps</label>
-      <input
-        type="number"
-        value={steps}
-        onChange={(e) => setSteps(e.target.value)}
-      />
-
-      {/* PROFILE FORM */}
       <form onSubmit={handleSubmit} className="profile-form">
+        <label>Fitness Goal</label>
+        <input
+          type="text"
+          value={goal}
+          onChange={(e) => setGoal(e.target.value)}
+        />
+
+        <label>Today's Steps</label>
+        <input type="number" value={steps} readOnly />
+
         <label>Current Weight (lbs)</label>
         <input
-          name="currentWeight"
           type="number"
-          value={formData.currentWeight}
-          onChange={handleChange}
+          value={currentWeight}
+          onChange={(e) => setCurrentWeight(e.target.value)}
         />
 
         <label>Goal Weight (lbs)</label>
         <input
-          name="goalWeight"
           type="number"
-          value={formData.goalWeight}
-          onChange={handleChange}
+          value={goalWeight}
+          onChange={(e) => setGoalWeight(e.target.value)}
         />
 
         <label>Height</label>
-        <div className="height-inputs">
+        <div style={{ display: "flex", gap: "10px" }}>
           <input
-            name="heightFeet"
             type="number"
             placeholder="Feet"
-            value={formData.heightFeet}
-            onChange={handleChange}
+            value={heightFeet}
+            onChange={(e) => setHeightFeet(e.target.value)}
           />
           <input
-            name="heightInches"
             type="number"
             placeholder="Inches"
-            value={formData.heightInches}
-            onChange={handleChange}
+            value={heightInches}
+            onChange={(e) => setHeightInches(e.target.value)}
           />
         </div>
 
         <button type="submit">Save Profile</button>
+        {message && <p style={{ color: "green" }}>{message}</p>}
       </form>
 
-      {/* PROFILE DISPLAY */}
-      <div className="profile-summary">
+      <div className="profile-summary" style={{ marginTop: "20px" }}>
         <h3>Your Information</h3>
-        <p>Current Weight: {profile.currentWeight} lbs</p>
-        <p>Goal Weight: {profile.goalWeight} lbs</p>
-        <p>
-          Height: {profile.heightFeet} ft {profile.heightInches} in
-        </p>
-        <p>Fitness Goal: {goal}</p>
-        <p>Today's Steps: {steps}</p>
+        <p>Current Weight: {currentWeight || "lbs"}</p>
+        <p>Goal Weight: {goalWeight || "lbs"}</p>
+        <p>Height: {heightFeet || "ft"} {heightInches || "in"}</p>
+        <p>Fitness Goal: {goal || "Stay Fit"}</p>
+        <p>Today's Steps: {steps || 0}</p>
       </div>
     </div>
   );

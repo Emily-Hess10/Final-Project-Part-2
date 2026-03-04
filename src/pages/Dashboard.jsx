@@ -1,32 +1,28 @@
+import { useTracker } from "../context/TrackerContext";
 import { useFitness } from "../context/FitnessContext";
-import { useEffect, useState } from "react";
-import { fetchFitnessTip } from "../services/api";
+import { useAuth } from "../context/AuthContext";
 
 function Dashboard() {
-  const { meals, workouts, steps } = useFitness();
-
-  const [tip, setTip] = useState("");
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchFitnessTip()
-      .then(setTip)
-      .catch(() => setTip("Stay consistent and keep moving"))
-      .finally(() => setLoading(false));
-  }, []);
-
+  const { meals } = useTracker();          
+  const { workouts, steps } = useFitness(); 
+  const { user, logout } = useAuth();       
+ 
   const totalCalories = meals.reduce(
-    (sum, meal) => sum + Number(meal.calories || 0),
+    (sum, item) => sum + Number(item.calories || 0),
     0
   );
 
   return (
     <div className="dashboard">
+      <header>
+        <h1>FitTrack</h1>
+        <p>Your Daily Health Dashboard</p>
+        <button onClick={logout}>Logout</button>
+      </header>
 
       <h2 className="section-title">Today's Summary</h2>
 
       <div className="card-grid">
-
         <div className="summary-card">
           <h3>Calories</h3>
           <p className="value">{totalCalories}</p>
@@ -46,15 +42,7 @@ function Dashboard() {
           <h3>Meals Logged</h3>
           <p className="value">{meals.length}</p>
         </div>
-
       </div>
-
-      <h2 className="section-title">Daily Fitness Tip</h2>
-
-      <div className="summary-card">
-        {loading ? <p>Loading...</p> : <p>{tip}</p>}
-      </div>
-
     </div>
   );
 }

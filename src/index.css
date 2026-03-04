@@ -1,68 +1,195 @@
+/* ================= Global Styles ================= */
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: 400;
+  line-height: 1.6;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* Colors */
+  --color-bg: #121212;
+  --color-bg-alt: #1f1f1f;
+  --color-text: #ffffff;
+  --color-primary: #646cff;
+  --color-primary-hover: #535bf2;
+  --color-accent: #ff6b6b;
+  --color-card-bg: #1a1a1a;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+  /* Spacing */
+  --gap: 1rem;
+  --radius: 12px;
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
+  padding: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* Links */
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
 }
 
+a:hover {
+  color: var(--color-primary-hover);
+  text-decoration: underline;
+}
+
+/* Headings */
+h1, h2, h3 {
+  margin: 0 0 0.5rem 0;
+}
+
+/* Buttons */
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+  border-radius: var(--radius);
+  border: none;
+  padding: 0.5em 1.2em;
   font-size: 1em;
   font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--color-card-bg);
+  color: var(--color-text);
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  transition: all 0.2s ease-in-out;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+button:hover {
+  background-color: var(--color-bg-alt);
+  border: 1px solid var(--color-primary);
+}
+
+/* Inputs */
+input, select, textarea {
+  padding: 0.5em;
+  border-radius: var(--radius);
+  border: 1px solid #333;
+  background-color: var(--color-bg-alt);
+  color: var(--color-text);
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 0.5rem;
+}
+
+/* ================= Navbar ================= */
+.nav-bar {
+  display: flex;
+  gap: var(--gap);
+  padding: 1rem;
+  background-color: var(--color-bg-alt);
+  width: 100%;
+  justify-content: center;
+}
+
+.nav-bar a {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.nav-bar a:hover {
+  color: var(--color-primary-hover);
+}
+
+/* ================= Main App Layout ================= */
+main {
+  width: 100%;
+  max-width: 1200px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+/* ================= Cards ================= */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--gap);
+}
+
+.card, .summary-card {
+  background-color: var(--color-card-bg);
+  padding: 1rem;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  transition: transform 0.2s;
+}
+
+.card:hover, .summary-card:hover {
+  transform: translateY(-4px);
+}
+
+/* ================= Dashboard ================= */
+.dashboard header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* ================= Profile Page ================= */
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background-color: var(--color-bg-alt);
+  padding: 1rem;
+  border-radius: var(--radius);
+}
+
+/* ================= BottomNav & FloatingButton ================= */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: var(--color-bg-alt);
+  display: flex;
+  justify-content: space-around;
+  padding: 0.5rem 0;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+}
+
+.floating-btn {
+  position: fixed;
+  bottom: 70px;
+  right: 20px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-size: 1.5rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.floating-btn:hover {
+  background-color: var(--color-primary-hover);
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 768px) {
+  .card-grid {
+    grid-template-columns: 1fr;
   }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
+
+  .dashboard header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 }
